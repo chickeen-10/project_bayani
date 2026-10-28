@@ -22,3 +22,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Playwright MCP generated artifacts
+.playwright-mcp/

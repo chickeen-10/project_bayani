@@ -30,7 +30,13 @@
   @if(session('status'))<div class="container mt-3"><div class="alert alert-success mb-0" role="status">{{ session('status') }}</div></div>@endif
 
   @include('components.navbar')
-  <main class="container bayani-main" id="app-content" aria-live="polite" tabindex="-1"></main>
+  <main class="container bayani-main" id="app-content" tabindex="-1" @if(in_array($page ?? '', ['login', 'register'])) data-server-rendered="true" @endif>
+    @if(in_array($page ?? '', ['login', 'register']))
+      @include('components.auth-form', ['register' => $page === 'register'])
+    @else
+      <noscript><div class="alert alert-info">Please enable JavaScript to browse the repository and use your workspace.</div></noscript>
+    @endif
+  </main>
   <footer class="footer py-5 mt-auto"><div class="container"><div class="row g-4 footer-columns"><div class="col-md-5"><div class="d-flex align-items-center gap-2 mb-3"><span class="brand-mark">B</span><span class="footer-title">Project BAYANI</span></div><p class="mb-2">Digital Educational Resource Repository &amp; CMS</p><p class="small-label mb-0">Learning resources across Philippine subjects, grade levels, and curricula.</p></div><div class="col-6 col-md-3"><div class="footer-title mb-3">Explore</div><div class="d-flex flex-column gap-2"><a href="{{ route('repository') }}">Repository</a><a href="{{ route('about') }}">About the project</a><a href="{{ route('help') }}">Help Center</a></div></div><div class="col-6 col-md-4">
   <div class="footer-title mb-3">Get started</div>
   <div class="d-flex flex-column gap-2">
@@ -45,7 +51,7 @@
       <a href="{{ route('register') }}">Join as a contributor</a>
     @endauth
   </div>
-</div></div><div class="border-top mt-4 pt-3 d-flex flex-column flex-md-row justify-content-between gap-2 small-label"><span>Resource metadata is stored in MariaDB. Attachments use private server storage and are served according to approval and ownership.</span><span>© Project BAYANI</span></div></div></footer>
+</div></div><div class="footer-colophon mt-4 pt-3 d-flex flex-column flex-md-row justify-content-between gap-2 small-label"><span>Shared knowledge. Stronger classrooms.</span><span>© Project BAYANI</span></div></div></footer>
   <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-host"></div>
   <div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirm-title" aria-describedby="confirm-message" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="confirm-title">Please confirm</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body" id="confirm-message">Continue?</div><div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button class="btn btn-danger" id="confirm-action">Confirm</button></div></div></div></div>
 </body>

@@ -154,9 +154,16 @@ test('repository and home styling removes decorative boxes while keeping control
     assert.match(styles, /\.repository-more-filters summary:focus-visible/);
     assert.match(styles, /\.repository-sort-summary:focus-visible/);
     assert.match(styles, /\.hero\.hero-editorial\{position:relative;isolation:isolate;overflow:visible;[^}]*background:transparent!important/);
-    assert.match(styles, /\.hero-art-panel\{[^}]*background:#214b36/);
-    assert.match(styles, /\.hero-art-panel:before,\.hero-art-panel:after\{content:none/);
+    assert.match(styles, /\.hero-art-panel\{[^}]*background:linear-gradient\(145deg,#173e2f,#35644a\)/);
+    assert.match(styles, /\.hero-art-panel\{position:relative;overflow:hidden;[^}]*background:radial-gradient\([^}]*linear-gradient\(145deg,#183d2d,#294c39 74%,#3f6248\)/);
     assert.match(styles, /\.cover-category\{[^}]*border:0/);
+});
+
+test('primary anchor buttons and highlighted dashboard metrics keep readable foregrounds in both themes', () => {
+    assert.match(appCssSource, /\.btn\.btn-primary\s*\{[^}]*color:\s*var\(--bs-btn-color\)/);
+    assert.match(appCssSource, /\.btn\.btn-outline-primary\s*\{[^}]*color:\s*var\(--bs-btn-color\)/);
+    assert.match(phase14Source, /\.dashboard-metrics \.col-xl-3:first-child \.stat-icon\s*\{[^}]*background:\s*var\(--bayani-surface-alt\);\s*color:\s*var\(--bayani-text\)/);
+    assert.match(phase14Source, /html\[data-theme="dark"\] \.dashboard-metrics \.col-xl-3:first-child \.small-label[^{}]*color:\s*#f7fbf2 !important/);
 });
 
 test('archived route renders the archived list even when the page marker is stale', () => {

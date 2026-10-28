@@ -1,6 +1,8 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import "./bayani-polish.css";
+@import "./phase11.css";
+@import "./phase14.css";
 
 :root {
   color-scheme: light;
@@ -12,7 +14,7 @@
   --bayani-border: #d7ded4;
   --bayani-primary: #24543d;
   --bayani-primary-contrast: #fffdf6;
-  --bayani-input-bg: #fffefa;
+  --bayani-input-bg: #edf0e8;
   --bayani-input-text: #18392d;
   --bayani-hover: #e2ebe1;
   --navy: #18392d;
@@ -117,8 +119,8 @@ html[data-theme="dark"] a { color: #c5e0c7; }
 .btn:not(:disabled):hover { transform: translateY(-1px); }
 .btn-sm { min-height: 36px; padding: .45rem .75rem; }
 .btn .bi, .nav-link .bi, .dropdown-item .bi { margin: 0 !important; font-size: 1.05em; line-height: 1; flex-shrink: 0; }
-.btn-primary { --bs-btn-color: var(--bayani-primary-contrast); --bs-btn-bg: var(--bayani-primary); --bs-btn-border-color: var(--bayani-primary); --bs-btn-hover-color: var(--bayani-primary-contrast); --bs-btn-hover-bg: #173f2c; --bs-btn-hover-border-color: #173f2c; --bs-btn-active-bg: #153b29; --bs-btn-active-border-color: #153b29; box-shadow: none; }
-.btn-outline-primary { --bs-btn-color: var(--bayani-primary); --bs-btn-border-color: color-mix(in srgb, var(--bayani-primary) 45%, transparent); --bs-btn-hover-color: var(--bayani-primary-contrast); --bs-btn-hover-bg: var(--bayani-primary); --bs-btn-hover-border-color: var(--bayani-primary); }
+.btn.btn-primary { color: var(--bs-btn-color); --bs-btn-color: var(--bayani-primary-contrast); --bs-btn-bg: var(--bayani-primary); --bs-btn-border-color: var(--bayani-primary); --bs-btn-hover-color: var(--bayani-primary-contrast); --bs-btn-hover-bg: #173f2c; --bs-btn-hover-border-color: #173f2c; --bs-btn-active-bg: #153b29; --bs-btn-active-border-color: #153b29; box-shadow: none; }
+.btn.btn-outline-primary { color: var(--bs-btn-color); --bs-btn-color: var(--bayani-primary); --bs-btn-border-color: color-mix(in srgb, var(--bayani-primary) 45%, transparent); --bs-btn-hover-color: var(--bayani-primary-contrast); --bs-btn-hover-bg: var(--bayani-primary); --bs-btn-hover-border-color: var(--bayani-primary); }
 .btn:focus-visible, .form-control:focus-visible, .form-select:focus-visible, .nav-link:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid #c5944d !important; outline-offset: 3px; box-shadow: none; }
 .btn:disabled, .btn.disabled, fieldset:disabled .btn { opacity: .62; cursor: not-allowed; }
 .card, .panel, .stat-card, .toolbar { border: 0; border-radius: var(--radius-lg); background: var(--bayani-surface); box-shadow: none; }
