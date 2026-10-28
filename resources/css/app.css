@@ -14,6 +14,9 @@
   --bayani-border: #d7ded4;
   --bayani-primary: #24543d;
   --bayani-primary-contrast: #fffdf6;
+  --bayani-kpi-value-on-primary: #ffffff;
+  --bayani-kpi-label-on-primary: #d6e9db;
+  --bayani-kpi-label-on-surface: #59685f;
   --bayani-input-bg: #edf0e8;
   --bayani-input-text: #18392d;
   --bayani-hover: #e2ebe1;
@@ -52,6 +55,9 @@ html[data-theme="dark"] {
   --bayani-border: #486352;
   --bayani-primary: #c5e0c7;
   --bayani-primary-contrast: #18392d;
+  --bayani-kpi-value-on-primary: #ffffff;
+  --bayani-kpi-label-on-primary: #d6e9db;
+  --bayani-kpi-label-on-surface: var(--bayani-text-muted);
   --bayani-input-bg: #183126;
   --bayani-input-text: #f1f4eb;
   --bayani-hover: #355744;
@@ -121,6 +127,9 @@ html[data-theme="dark"] a { color: #c5e0c7; }
 .btn .bi, .nav-link .bi, .dropdown-item .bi { margin: 0 !important; font-size: 1.05em; line-height: 1; flex-shrink: 0; }
 .btn.btn-primary { color: var(--bs-btn-color); --bs-btn-color: var(--bayani-primary-contrast); --bs-btn-bg: var(--bayani-primary); --bs-btn-border-color: var(--bayani-primary); --bs-btn-hover-color: var(--bayani-primary-contrast); --bs-btn-hover-bg: #173f2c; --bs-btn-hover-border-color: #173f2c; --bs-btn-active-bg: #153b29; --bs-btn-active-border-color: #153b29; box-shadow: none; }
 .btn.btn-outline-primary { color: var(--bs-btn-color); --bs-btn-color: var(--bayani-primary); --bs-btn-border-color: color-mix(in srgb, var(--bayani-primary) 45%, transparent); --bs-btn-hover-color: var(--bayani-primary-contrast); --bs-btn-hover-bg: var(--bayani-primary); --bs-btn-hover-border-color: var(--bayani-primary); }
+.btn.btn-outline-primary:not(:disabled):not(.disabled):hover,
+.btn.btn-outline-primary:not(:disabled):not(.disabled):focus-visible,
+.btn.btn-outline-primary:not(:disabled):not(.disabled):active { color: var(--bayani-primary-contrast); background-color: var(--bayani-primary); border-color: var(--bayani-primary); }
 .btn:focus-visible, .form-control:focus-visible, .form-select:focus-visible, .nav-link:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid #c5944d !important; outline-offset: 3px; box-shadow: none; }
 .btn:disabled, .btn.disabled, fieldset:disabled .btn { opacity: .62; cursor: not-allowed; }
 .card, .panel, .stat-card, .toolbar { border: 0; border-radius: var(--radius-lg); background: var(--bayani-surface); box-shadow: none; }

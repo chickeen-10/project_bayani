@@ -5,6 +5,13 @@ const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({
 const officeThumbnailCache = new Map();
 let officeThumbnailQueue = Promise.resolve();
 
+export function isRenderableOfficeThumbnailResponse(response) {
+    if (!response?.ok) return false;
+    const type = response.headers?.get('content-type') || '';
+    return /^image\/(jpeg|png|webp)$/i.test(type)
+        || (/^image\/svg\+xml(?:;|$)/i.test(type) && response.headers?.get('X-Bayani-Thumbnail') === 'content');
+}
+
 function showOfficeThumbnailFallback(image) {
     if (!image?.isConnected || image.dataset.officeCaptureFailed === 'true') return;
     image.dataset.officeCaptureFailed = 'true';
@@ -22,7 +29,7 @@ async function captureOfficeThumbnail(image, format, sourceUrl, cacheKey, docume
         const thumbnailUrl = sourceUrl.replace(/\/file(?:\?.*)?$/, '/thumbnail') + '?v=' + encodeURIComponent(cacheKey);
         const cacheUrl = sourceUrl.replace(/\/file(?:\?.*)?$/, '/thumbnail-cache');
         const cached = await fetch(thumbnailUrl, { credentials: 'same-origin', cache: 'no-store' }).catch(() => null);
-        if (cached?.ok && /^image\/(jpeg|png|webp)$/i.test(cached.headers.get('content-type') || '')) {
+        if (isRenderableOfficeThumbnailResponse(cached)) {
             image.src = thumbnailUrl;
             image.classList.remove('office-thumbnail-pending');
             image.classList.add('is-content-thumbnail');

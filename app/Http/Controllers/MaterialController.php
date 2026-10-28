@@ -210,7 +210,9 @@ class MaterialController extends Controller
             if ($thumbnail === null) return response($this->thumbnailNoticeSvg($this->thumbnailUnavailableMessage($extension)), 200, ['Content-Type' => 'image/svg+xml; charset=UTF-8', 'X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'private, no-store']);
             $disk = $source instanceof MaterialAttachment ? $source->storage_disk : ($source->file_disk ?: 'bayani_uploads');
             $body = Storage::disk($disk)->get($thumbnail['path']);
-            return response($body, 200, ['Content-Type' => $thumbnail['mime'], 'Content-Disposition' => 'inline; filename="thumbnail.'.$extension.'"', 'X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'private, max-age=3600', 'ETag' => '"'.hash('sha256', $thumbnail['path']).'"']);
+            $headers = ['Content-Type' => $thumbnail['mime'], 'Content-Disposition' => 'inline; filename="thumbnail.'.$extension.'"', 'X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'private, max-age=3600', 'ETag' => '"'.hash('sha256', $thumbnail['path']).'"'];
+            if (str_starts_with($thumbnail['path'], 'thumbnails/openxml-')) $headers['X-Bayani-Thumbnail'] = 'content';
+            return response($body, 200, $headers);
         } catch (\Throwable $exception) {
             report($exception);
             return response($this->thumbnailNoticeSvg('A content thumbnail is unavailable for this file.'), 200, ['Content-Type' => 'image/svg+xml; charset=UTF-8', 'X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'private, no-store']);
@@ -253,6 +255,7 @@ class MaterialController extends Controller
                 'X-Content-Type-Options' => 'nosniff',
                 'Cache-Control' => 'private, max-age=3600',
                 'ETag' => '"'.hash('sha256', $thumbnail['path']).'"',
+                ... (str_starts_with($thumbnail['path'], 'thumbnails/openxml-') ? ['X-Bayani-Thumbnail' => 'content'] : []),
             ]);
         } catch (\Throwable $exception) {
             report($exception);
@@ -907,7 +910,7 @@ class MaterialController extends Controller
     private function thumbnailUnavailableMessage(string $extension): string
     {
         return match ($extension) {
-            'xlsx', 'docx' => 'A page-faithful thumbnail is unavailable. This server has no configured Office document renderer; use the clearly labeled text preview or download the original.',
+            'xlsx', 'docx' => 'A content-derived snapshot could not be generated. Open the text preview or download the original.',
             'pptx' => 'PowerPoint slide rendering is not configured. Download the original presentation to view it.',
             'mp3','wav','ogg' => '♫  AUDIO FILE — open the preview to play this attachment.',
             'mp4','webm' => 'VIDEO FILE — a poster frame is shown when this browser can decode the video.',

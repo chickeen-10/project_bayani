@@ -163,7 +163,8 @@ test('primary anchor buttons and highlighted dashboard metrics keep readable for
     assert.match(appCssSource, /\.btn\.btn-primary\s*\{[^}]*color:\s*var\(--bs-btn-color\)/);
     assert.match(appCssSource, /\.btn\.btn-outline-primary\s*\{[^}]*color:\s*var\(--bs-btn-color\)/);
     assert.match(phase14Source, /\.dashboard-metrics \.col-xl-3:first-child \.stat-icon\s*\{[^}]*background:\s*var\(--bayani-surface-alt\);\s*color:\s*var\(--bayani-text\)/);
-    assert.match(phase14Source, /html\[data-theme="dark"\] \.dashboard-metrics \.col-xl-3:first-child \.small-label[^{}]*color:\s*#f7fbf2 !important/);
+    assert.match(phase14Source, /html\[data-theme="dark"\] \.dashboard-metrics \.col-xl-3:first-child \.small-label\s*\{[^}]*color:\s*var\(--bayani-kpi-label-on-primary\) !important/);
+    assert.match(phase14Source, /html\[data-theme="dark"\] \.dashboard-metrics \.col-xl-3:first-child \.stat-value\s*\{[^}]*color:\s*var\(--bayani-kpi-value-on-primary\) !important/);
 });
 
 test('archived route renders the archived list even when the page marker is stale', () => {

@@ -1,9 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-import { enhanceDatabasePreviews, enhanceOfficeAttachmentThumbnails, installPreviewInteractions, renderFilePreview } from '../../resources/js/bayani-file-preview.js';
+import { enhanceDatabasePreviews, enhanceOfficeAttachmentThumbnails, installPreviewInteractions, isRenderableOfficeThumbnailResponse, renderFilePreview } from '../../resources/js/bayani-file-preview.js';
 import ExcelJS from 'exceljs';
 import { renderXlsxDocument } from '../../resources/js/bayani-file-preview.js';
+
+test('Office thumbnail accepts actual content SVGs and raster images but rejects placeholder SVGs', () => {
+    const response = (type, marker = null, ok = true) => ({ ok, headers: { get: name => name.toLowerCase() === 'content-type' ? type : name.toLowerCase() === 'x-bayani-thumbnail' ? marker : null } });
+    assert.equal(isRenderableOfficeThumbnailResponse(response('image/svg+xml', 'content')), true);
+    assert.equal(isRenderableOfficeThumbnailResponse(response('image/jpeg')), true);
+    assert.equal(isRenderableOfficeThumbnailResponse(response('image/svg+xml')), false);
+    assert.equal(isRenderableOfficeThumbnailResponse(response('image/svg+xml', 'content', false)), false);
+});
 
 test('spreadsheet preview loads the original workbook and keeps download separate', () => {
     const html = renderFilePreview({

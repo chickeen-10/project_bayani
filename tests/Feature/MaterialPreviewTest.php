@@ -88,14 +88,15 @@ class MaterialPreviewTest extends TestCase
         $material->forceFill(['thumbnail_path' => $stalePath])->save();
         $attachment->forceFill(['thumbnail_path' => $stalePath])->save();
         $thumbnail = $this->get(route('materials.thumbnail', $material));
-        $thumbnail->assertOk()->assertHeader('Content-Type', 'image/svg+xml; charset=UTF-8')->assertSee('page-faithful thumbnail is unavailable');
-        $this->assertNull($material->fresh()->thumbnail_path);
+        $thumbnail->assertOk()->assertHeader('Content-Type', 'image/svg+xml')->assertHeader('X-Bayani-Thumbnail', 'content')->assertSee('Grade 2')->assertSee('98');
+        $this->assertStringStartsWith('thumbnails/openxml-material-', $material->fresh()->thumbnail_path);
         Storage::disk('bayani_uploads')->assertExists($stalePath); // Still referenced by the attachment until its route is checked.
 
         $this->get(route('materials.attachments.preview',[$material,$attachment]))->assertOk()->assertSee('Scores')->assertSee('98');
         $this->get(route('materials.attachments.file',[$material,$attachment]))->assertOk()->assertHeader('Content-Disposition','attachment; filename="scores.xlsx"');
-        $this->get(route('materials.attachments.thumbnail',[$material,$attachment]))->assertOk()->assertSee('page-faithful thumbnail is unavailable');
-        $this->assertNull($attachment->fresh()->thumbnail_path);
+        $attachmentThumbnail = $this->get(route('materials.attachments.thumbnail',[$material,$attachment]));
+        $attachmentThumbnail->assertOk()->assertHeader('Content-Type', 'image/svg+xml')->assertHeader('X-Bayani-Thumbnail', 'content')->assertSee('Grade 2')->assertSee('98');
+        $this->assertStringStartsWith('thumbnails/openxml-attachment-', $attachment->fresh()->thumbnail_path);
         Storage::disk('bayani_uploads')->assertMissing($stalePath);
     }
 
@@ -113,8 +114,8 @@ class MaterialPreviewTest extends TestCase
         $this->get(route('materials.attachments.preview',[$material,$attachment]))->assertOk()->assertSee('Learning objectives')->assertSee('Read and discuss the text.');
         $this->get(route('materials.attachments.file',[$material,$attachment]))->assertOk()->assertHeader('Content-Disposition','attachment; filename="lesson.docx"');
         $thumbnail = $this->get(route('materials.thumbnail', $material));
-        $thumbnail->assertOk()->assertHeader('Content-Type', 'image/svg+xml; charset=UTF-8')->assertSee('page-faithful thumbnail is unavailable');
-        $this->assertNull($material->fresh()->thumbnail_path);
+        $thumbnail->assertOk()->assertHeader('Content-Type', 'image/svg+xml')->assertHeader('X-Bayani-Thumbnail', 'content')->assertSee('Learning objectives')->assertSee('Read and discuss the text.');
+        $this->assertStringStartsWith('thumbnails/openxml-material-', $material->fresh()->thumbnail_path);
     }
 
     public function test_thumbnails_and_previews_keep_pending_attachments_private(): void
